@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head th:replace="fragments :: head" />
+
+<body>
+  <!-- container section start -->
+  <section id="container" class="">
+    <!--header start-->
+	<header th:replace="fragments :: headercontent" class="header dark-bg"></header>
+    
+    
+    <!--header end-->
+
+    <!--sidebar start-->
+    <aside>
+      <div th:replace="fragments :: menu"></div>
+    </aside>
+    <!--sidebar end-->
+
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <div class="row">
+          <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i> List of Countries</h3>
+            <ol class="breadcrumb">
+              <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+              <li><i class="fa fa-bars"></i>Pages</li>
+              <li><i class="fa fa-square-o"></i>Pages</li>
+            </ol>
+          </div>
+        </div>
+        <!--  page start  -->
+        <div class="row">
+          <div class="col-lg-12">
+          
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" >Add Country</button>
+        
+       <table class="table">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Capital</th>
+                    <th>Code</th>
+                    <th>Continent</th>
+                    <th>Country</th>
+                    <th>Nationality</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="c:${country}">
+                    <td th:text="${c.id}"></td>
+                    <td th:text="${c.capital}"></td>
+                    <td th:text="${c.code}"></td>
+                    <td th:text="${c.continent}"></td>
+                    <td th:text="${c.description}"></td>
+                    <td th:text="${c.nationality}"></td>
+                    <td>
+                    	<div class="btn-group">
+                    		<!--
+									here in the below code the id="editButton".When the user selects this button
+									The system will go to "country.js" file and execute the script code to call
+									"editModal". Refer "country.js" and  the modal view "editModal" present below
+							-->
+                    		<a th:href="@{/country/findById/(id=${c.id})}" class="btn btn-primary" id="editButton"> <i class="icon_pencil-edit"></i> </a>
+                    		
+                    		<!--
+									here in the below code the id="viewButton".When the user selects this button
+									The system will go to "country.js" file and execute the script code to call
+									"viewModal". Refer "country.js" and  the modal view "viewModal" present below
+							-->
+	                    	<a th:href="@{/country/findById/(id=${c.id})}" class="btn btn-success" id="viewButton"><i class="icon_document_alt"></i></a>
+	                    	
+	                    	<!--
+									here in the below code the id="deleteButton".When the user selects this button
+									The system will go to "country.js" file and execute the script code to call
+									"deleteModal". Refer "country.js" and  the modal view "deleteModal" present below
+							-->
+							<a th:href="@{/country/deleteById/(id=${c.id})}" class="btn btn-danger" id="deleteButton"><i class="icon_close_alt2"></i></a>
+						
+						</div>
+                    </td>
+                  </tr>
+                </tbody>
+       </table>  
+       
+        </div>
+        </div>      
+        <!-- page end-->
+      </section>
+    </section>
+    <!--main content end-->
+    <div class="text-right">
+      <div class="credits">
+          <!--
+            All the links in the footer should remain intact.
+            You can delete the links only if you purchased the pro version.
+            Licensing information: https://bootstrapmade.com/license/
+            Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+          -->
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+    </div>
+  </section>
+  <!-- container section end -->
+  
+  <!-- ---------------------------------------------  ADD COUNTRY MODAL VIEW START --------------------------------------------- -->
+ 
+ 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><b>Add Country</b></h5>
+        
+      </div>
+      <div class="modal-body">
+        
+        <form th:action="@{/country/addNew}" method="post">
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Capital:</label>
+            <input type="text" class="form-control" id="recipient-name" name="capital"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Code:</label>
+            <input type="text" class="form-control" id="recipient-name" name="code"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Continent:</label>
+            <input type="text" class="form-control" id="recipient-name" name="continent"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Country:</label>
+            <input type="text" class="form-control" id="recipient-name" name="description"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nationality:</label>
+            <input type="text" class="form-control" id="recipient-name" name="nationality"  required>
+          </div>
+          
+          <div class="form-group">
+           	<button type="submit" class="btn btn-primary">Submit</button>
+           	<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <!-- --------------------------------------------- ADD COUNTRY MODAL VIEW END --------------------------------------------- -->
+  
+  
+   <!-- --------------------------------------------- EDIT COUNTRY MODAL VIEW START ---------------------------------------------  -->
+ 
+ 	<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><b>Edit Country</b></h5>
+      </div>
+      <div class="modal-body">
+        
+        <form th:action="@{/country/update}" method="put">
+         <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Id:</label>
+            <input type="text" class="form-control" id="idEdit" name="id"  readonly>
+          </div>
+          
+        
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Capital:</label>
+            <input type="text" class="form-control" id="capitalEdit" name="capital"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Code:</label>
+            <input type="text" class="form-control" id="codeEdit" name="code"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Continent:</label>
+            <input type="text" class="form-control" id="continentEdit" name="continent"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Country:</label>
+            <input type="text" class="form-control" id="descriptionEdit" name="description"  required>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nationality:</label>
+            <input type="text" class="form-control" id="nationalityEdit" name="nationality"  required>
+          </div>
+          
+          <div class="form-group">
+           	<button type="submit" class="btn btn-primary">Update</button>
+           	<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <!-- --------------------------------------------- EDIT COUNTRY MODAL VIEW END --------------------------------------------- -->
+
+   <!-- --------------------------------------------- VIEW COUNTRY MODAL VIEW START ---------------------------------------------  -->
+ 
+ 	<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><b>View Country</b></h5>
+        
+      </div>
+      <div class="modal-body">
+        
+        
+         <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Id:</label>
+            <input type="text" class="form-control" id="idView" name="id"  readonly>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Capital:</label>
+            <input type="text" class="form-control" id="capitalView" name="capital"  readonly>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Code:</label>
+            <input type="text" class="form-control" id="codeView" name="code"  readonly>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Continent:</label>
+            <input type="text" class="form-control" id="continentView" name="continent" readonly>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Country:</label>
+            <input type="text" class="form-control" id="descriptionView" name="description"  readonly>
+          </div>
+          
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nationality:</label>
+            <input type="text" class="form-control" id="nationalityView" name="nationality" readonly>
+          </div>
+          
+          <div class="form-group">
+           	<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <!-- --------------------------------------------- VIEW COUNTRY MODAL VIEW END --------------------------------------------- -->
+  
+   <!-- --------------------------------------------- DELETE COUNTRY MODAL VIEW START --------------------------------------------- -->
+  
+  <div class="modal"  id="deleteModal" tabindex="-1" role="dialog">
+  	<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this record???</p>
+      </div>
+      <div class="modal-footer">
+      <!--
+			1. Here below code we had to change from button to 
+      	   anchor tag becuase we are send the request to controller 
+      	   to delete the record
+      	   
+      	   2. When the user clicks on "Yes, Delete" button the 
+      	   id="confirmDeleteButton" will go to "country.js"
+      	   Here note that here we have set href="" as empty.
+      	   So when it goes to "country.js" , if the user
+      	   clicks on the button having id="confirmDeleteButton"
+      	   it will use the href="" and delete the record
+      -->
+        <a class="btn btn-primary" id="confirmDeleteButton" href="">Yes, Delete</a> 
+        <button type="button" class="btn btn-primary" data-dismiss="modal">No, Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+   <!-- --------------------------------------------- DELETE COUNTRY MODAL VIEW END --------------------------------------------- -->
+  
+  
+  <!-- javascripts -->
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- nice scroll -->
+  <script src="js/jquery.scrollTo.min.js"></script>
+  <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+  <!--custome script for all page-->
+  <script src="js/scripts.js"></script>
+  <script src="js/country.js"></script>
+
+</body>
+
+</html>
